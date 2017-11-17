@@ -22,7 +22,7 @@ class pipe_monitor extends uvm_monitor #(transfer);
       item_sent      = transfer::type_id::create("item_sent");
       item_returned  = transfer::type_id::create("item_returned");
 
-      `uvm_info(get_full_name(), " Build stage complete.",UVM_LOW);
+      `uvm_info(get_full_name(), " Build stage complete.",UVM_LOW)
    endfunction // build_phase
 
    virtual task run_phase();
@@ -45,7 +45,7 @@ class pipe_monitor extends uvm_monitor #(transfer);
      endtask // collect_data
  
    virtual function void report_phase(uvm_phse phase);
-      `uvm_info(get_full_name, $sformatf("REPORT: Collected Packets : %d", num_pkts), UVM_LOW);      
+      `uvm_info(get_full_name, $sformatf("REPORT: Collected Packets : %d", num_pkts), UVM_LOW)      
    endfunction // report_phase
      
 endclass // pipe_monitor
