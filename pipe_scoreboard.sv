@@ -31,6 +31,8 @@ class pipe_scoreboard extends uvm_scoreboard;
       forever begin
 	 input_items_fifo.get(input_item);
 	 output_items_fifo.get(output_item);
+       // input_item.displayAll();
+       // output_item.displayAll();
 	 compare_data();
       end
    endtask // watcher
@@ -42,20 +44,29 @@ class pipe_scoreboard extends uvm_scoreboard;
          exp_data0 = input_item.data_in0;
       end
       else begin
-	 exp_data0 = input_item.data_in0 * cf;
+	     exp_data0 = input_item.data_in0 * input_item.cf;
       end
       
       if ((input_item.data_in1 == 16'h0000) || (input_item.data_in1 == 16'hFFFF)) begin
          exp_data1 = input_item.data_in1;
       end
       else begin
-	 exp_data1 = input_item.data_in1 * cf;
+	     exp_data1 = input_item.data_in1 * input_item.cf;
       end
 
-      if (exp_data0 != output_item.data_in0)
-	 `uvm_error(get_type_name, $sformatf("Actual output data: %0h does not match expected data: %0h", output_item.data_in0,exp_data0)  
+     if (exp_data0 != output_item.data_in0) begin
+	 `uvm_error(get_type_name, $sformatf("Actual output data: %0h does not match expected data: %0h", output_item.data_in0,exp_data0))  
+     end
+     else begin
+      `uvm_info(get_type_name, $sformatf("Actual output data: %0h match expected data: %0h", output_item.data_in0,exp_data0), UVM_LOW) 
+     end
+
      
-      if (exp_data1 != output_item.data_in1)
-	 `uvm_error(get_type_name, $sformatf("Actual output data: %0h does not match expected data: %0h", output_item.data_in1,exp_data1)  
+     if (exp_data1 != output_item.data_in1) begin
+	 `uvm_error(get_type_name, $sformatf("Actual output data: %0h does not match expected data: %0h", output_item.data_in1,exp_data1))  
+     end
+     else begin
+     `uvm_info(get_type_name, $sformatf("Actual output data: %0h match expected data: %0h", output_item.data_in1,exp_data1), UVM_LOW) 
+     end
   endtask // compare_data
 endclass // pipe_scoreboard

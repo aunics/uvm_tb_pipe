@@ -4,7 +4,7 @@ class pipe_driver extends uvm_driver #(transfer);
    `uvm_component_utils(pipe_driver)
 
    function new(string name, uvm_component parent);
-      super.new(name);
+     super.new(name,parent);
    endfunction // new
 
    function void build_phase(uvm_phase phase);
@@ -26,8 +26,8 @@ class pipe_driver extends uvm_driver #(transfer);
 	 @(negedge vif.rst_n);
 	 `uvm_info(get_type_name(), " Resetting signals ", UVM_LOW)
 	 vif.cf = 2'b0;
-	 vif.data_in0 = 16'b0;
-	 vif.data_in1 = 16'b0;
+     vif.i_data0 = 16'b0;
+	 vif.i_data1 = 16'b0;
 	 vif.enable   = 1'b0;
       end
     endtask // reset
@@ -37,7 +37,7 @@ class pipe_driver extends uvm_driver #(transfer);
 	 @(posedge vif.rst_n);
 	 while(vif.rst_n != 1'b0) begin
 	    seq_item_port.get_next_item(req);
-	    driver_packet(req);
+	    drive_packet(req);
 	    seq_item_port.item_done(req);
 	 end
       end
@@ -46,27 +46,12 @@ class pipe_driver extends uvm_driver #(transfer);
    virtual task drive_packet(transfer pkt);
       vif.enable = 1'b0;
       repeat (pkt.delay) @(posedge vif.clk);
+     pkt.displayAll();
       vif.enable    = pkt.enable;
-      vif.data_in0  = pkt.data_in0;
-      vif.data_in1 = pkt.data_in1;
+      vif.i_data0  = pkt.data_in0;
+      vif.i_data1 = pkt.data_in1;
       vif.cf = pkt.cf;
       @(posedge vif.clk);
       vif.enable = 1'b0;
    endtask // drive_packet
 endclass // pipe_driver
-
-
-      
-
-      
-   
-
-      
-      
-
-      
-
-      
-      
-      
-   

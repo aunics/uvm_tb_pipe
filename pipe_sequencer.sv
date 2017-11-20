@@ -1,4 +1,4 @@
-class pipe_sequencer extends uvm_sequencer #(trasfer);
+class pipe_sequencer extends uvm_sequencer #(transfer);
    `uvm_sequencer_utils(pipe_sequencer)
 
    function new(string name, uvm_component parent);
